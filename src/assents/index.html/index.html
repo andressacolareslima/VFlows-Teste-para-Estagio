@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Cadastro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="/style-guide/css/fluig-style-guide.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&family=Roboto+Condensed:wght@100..900&display=swap" rel="stylesheet">
+
+    <script src="/portal/resources/js/jquery/jquery.js"></script>
+    <script src="/portal/resources/js/jquery/jquery-ui.min.js"></script>   
+
+    <script src="/portal/resources/js/mustache/mustache-min.js"></script>
+    <script src="/style-guide/js/fluig-style-guide.min.js"></script>   
+
+</head>
+
+<body>
+    <form class="formulario-produto">
+        <h2 class="titulo-formularios">CADASTRO FORNECEDOR/PRODUTO</h2>
+
+        <div class="titulo">
+            <h5>Dados do Fornecedor</h5>
+        </div>
+
+        <div class="conteiner">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-8">
+                    <h4>Razão Social</h4>
+                    <input type="text" name="razaosocial" id="razaosocial" class="form-control" required>
+                </div>
+
+                <div class="col-xs-6 col-md-4">
+                    <h4>CNPJ</h4>
+                    <input type="text" name="cnpj" id="cnpj" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-8">
+                    <h4>Nome Fantasia</h4>
+                    <input type="text" name="fname" id="fname" class="form-control" required>
+                </div>
+
+                <div class="col-xs-6 col-md-4">
+                    <h4>Inscrição Municipal <small>(opcional)</small></h4>
+                    <input type="text" name="imunicipal" id="imunicipal" class="form-control">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6 col-md-6">
+                    <h4>CEP</h4>
+                    <input type="text" name="cep" id="cep" placeholder="00000-000" maxlength="8" class="form-control" onblur="buscarEndereco()">
+                </div>
+
+                <div class="col-md-2"></div>
+
+                <div class="col-xs-6 col-md-4">
+                    <h4>Inscrição Estadual <small>(opcional)</small></h4>
+                    <input type="text" name="iestadual" id="iestadual" class="form-control">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 col-md-8">
+                    <h4>Endereço</h4>
+                    <input type="text" name="endereco" id="endereco" class="form-control" readonly required>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <h4>Número</h4>
+                    <input type="text" name="numero" id="numero" class="form-control input-maior">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Complemento</h4>
+                    <input type="text" name="complemento" id="complemento" class="form-control">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6 col-md-4">
+                    <h4>Bairro</h4>
+                    <input type="text" name="bairro" id="bairro" class="form-control" readonly>
+                </div>
+
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <h4>Municipio</h4>
+                    <input type="text" name="municipio" id="cidade" class="form-control" readonly>
+                </div>
+
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <h4>Estado</h4>
+                    <input type="text" name="estado" id="estado" class="form-control" readonly>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6 col-md-4">
+                    <h4>Nome da Pessoa de Contato</h4>
+                    <input type="text" name="cnome" id="cnome" class="form-control" required>
+                </div>
+
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <h4>Telefone</h4>
+                    <input type="text" name="telefone" id="telefone" class="form-control" required>
+                </div>
+
+                <div class="col-xs-12 col-sm-4 col-md-4">
+                    <h4>E-mail</h4>
+                    <input type="text" name="email" id="email" class="form-control" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="titulo">
+            <h5>Produtos</h5>
+        </div>
+
+            <div id="tabela-produtos" class="conteiner">
+
+                <div id="modal-produto" class="modal">
+
+                    <div class="modal-content">
+
+                        <span class="close">&times;</span>
+
+                        <h2>Adicionar Novo Produto</h2>
+
+                        <form id="form-produto">
+
+                            <div class="form-group">
+                                <label for="produto">Descrição</label>
+                                <input type="text" id="produto" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="und-medida">Unidade de Medida</label>
+                                <select id="und-medida" class="form-control" required>
+                                    <option value="" disabled selected>Selecione</option>
+                                    <option value="Quilogramas">Quilogramas</option>
+                                    <option value="Gramas">Gramas</option>
+                                    <option value="Miligramas">Miligramas</option>
+                                </select>
+
+                            </div>
+                            <div class="form-group">
+
+                                <label for="estoque">Quantidade em Estoque</label>
+                                <input type="number" id="estoque" class="form-control" required>
+
+                            </div>
+                            <div class="form-group">
+
+                                <label for="valor-unidade">Valor Unitário</label>
+                                <input type="number" id="valor-unidade" class="form-control" step="0.01" required>
+
+                            </div>
+                            <div class="form-group">
+                                
+                                <label for="valor-total">Valor Total</label>
+                                <input type="text" id="valor-total" class="form-control" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="button" id="btn-salvar" class="btn-green btn btn-primary btn-lg col-md-12">Salvar</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+                <div id="tabela-produtos">
+                </div>
+
+                <button type="button" id="btn-adicionar-produto" class="btn-green btn btn-primary btn-lg col-md-12">
+                    Adicionar Produto
+                </button>
+                
+            </div>
+
+            <div class="titulo">
+                <h5>Anexos</h5>
+            </div>
+
+            <div class="conteiner">
+
+                <div class="painel">
+                    <div class="panel-heading">Itens</div>
+                    <div id="tabela-anexos">
+                        <div id="tabela-anexos">
+                        </div>
+                    </div>
+
+                </div>
+
+                <button type="button" id="btn-incluir-anexo" class="btn-green btn btn-primary btn-lg col-md-12">
+                    Incluir Anexo
+                </button>
+            </div>
+
+            <button type="button" id="btn-salvar-fornecedor" class="btn-green btn btn-primary btn-lg col-md-12" onclick="salvarDados()">
+                Salvar Fornecedor
+            </button>
+        </form>
+
+        <div id="modal-loading" class="modal">
+
+            <div class="modal-content">
+                <span class="close" onclick="fecharModal()">&times;</span>
+                <p>Enviando dados...</p>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+
+    </html>
